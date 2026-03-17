@@ -1,0 +1,38 @@
+#!/bin/bash
+# Secure Documents Library - Command-Line Launcher
+# Usage: securedocs <command> [arguments...]
+
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Search for JAR in multiple locations
+JAR_LOCATIONS=(
+    "$SCRIPT_DIR/target/securedocs.jar"                  # Library directory
+    "$SCRIPT_DIR/../library/target/securedocs.jar"      # Project root
+    "$SCRIPT_DIR/securedocs.jar"                         # Same directory as script
+    "/usr/local/lib/securedocs.jar"                      # System-wide installation
+    "$HOME/.local/lib/securedocs.jar"                    # User installation
+)
+
+JAR_FILE=""
+for location in "${JAR_LOCATIONS[@]}"; do
+    if [ -f "$location" ]; then
+        JAR_FILE="$location"
+        break
+    fi
+done
+
+# Check if JAR was found
+if [ -z "$JAR_FILE" ]; then
+    echo "Error: securedocs.jar not found in any of the following locations:"
+    printf '  - %s\n' "${JAR_LOCATIONS[@]}"
+    echo ""
+    echo "Please either:"
+    echo "  1. Build the project: cd <project-root> && mvn clean package -pl library"
+    echo "  2. Copy securedocs.jar to the same directory as this script"
+    echo "  3. Install system-wide: sudo cp securedocs.jar /usr/local/lib/"
+    exit 1
+fi
+
+# Execute the CLI with all arguments passed through
+java -jar "$JAR_FILE" "$@"

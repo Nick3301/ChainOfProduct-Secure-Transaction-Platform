@@ -1,0 +1,9 @@
+{
+  "id": "doc-002",
+  "timestamp": 17663363400,
+  "seller": "alice",
+  "buyer": "bob",
+  "product": "Indium",
+  "units": 40000,
+  "amount": 90000000
+}

@@ -1,0 +1,10 @@
+{
+  "groups": [
+    {
+      "groupName": "test",
+      "members": [
+        "charlie"
+      ]
+    }
+  ]
+}
